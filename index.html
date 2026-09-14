@@ -124,8 +124,8 @@
       </div>
       <div id="cart-items" class="cart-items"></div>
       <p id="cart-empty" class="cart-empty">السلة فارغة حاليًا.</p>
-      <div class="cart-total"><span>الإجمالي التقريبي</span><strong id="cart-total">0 د.ل</strong></div>
-      <p id="cart-note" class="cart-note">سيتم تأكيد الطلب وتكلفة التوصيل معكم عبر واتساب.</p>
+      <div class="cart-total"><span id="cart-total-label">إجمالي الطلب</span><strong id="cart-total">0 د.ل</strong></div>
+      <p id="cart-note" class="cart-note">رسوم التوصيل غير مشمولة وسيتم تأكيدها معكم عبر واتساب.</p>
       <form id="checkout-form" class="checkout-form">
         <h3>إتمام الطلب</h3>
         <div class="delivery-options">
@@ -134,7 +134,8 @@
         </div>
         <label>الاسم<input id="customer-name" name="name" required autocomplete="name"></label>
         <label>رقم التواصل<input id="customer-phone" name="phone" type="tel" required inputmode="tel" autocomplete="tel"></label>
-        <label id="location-field">الموقع / العنوان<input id="customer-location" name="location" required autocomplete="street-address"></label>
+        <label id="location-field">عنوان التوصيل<input id="customer-location" name="location" required autocomplete="street-address"></label>
+        <label>ملاحظات الطلب <span class="optional">اختياري</span><textarea id="customer-note" name="note" rows="3"></textarea></label>
         <button id="checkout-button" class="checkout-button" type="submit">إرسال الطلب عبر واتساب</button>
       </form>
     </aside>
