@@ -226,6 +226,8 @@ const elements = {
   cartEmpty: document.querySelector('#cart-empty'),
   cartCount: document.querySelector('#cart-count'),
   cartTotal: document.querySelector('#cart-total'),
+  cartTotalLabel: document.querySelector('#cart-total-label'),
+  cartNote: document.querySelector('#cart-note'),
   checkoutButton: document.querySelector('#checkout-button'),
   checkoutForm: document.querySelector('#checkout-form'),
   locationField: document.querySelector('#location-field'),
@@ -313,13 +315,29 @@ function getSelectedValue(output) {
   return Number(output.value.replace(/[^0-9.]/g, ''));
 }
 
+function calculateCartTotal() {
+  return state.cart.reduce(
+    (total, line) => total + line.selectedValue * line.count,
+    0,
+  );
+}
+
+function isDeliverySelected() {
+  return document.querySelector('input[name="fulfillment"]:checked')?.value === 'delivery';
+}
+
 function getCartLineDescription(line) {
   if (line.unit === 'kg') {
-    const approximateWeight = (line.selectedValue / line.price).toFixed(2);
-    return `تعبئة بقيمة ${formatMoney(line.selectedValue)} (تقريبًا ${approximateWeight} كغ)`;
+    const totalGrams = Math.round((line.selectedValue / line.price) * 1000 * line.count);
+    return `الوزن التقريبي: ${totalGrams.toLocaleString('ar-LY')} غرام`;
   }
 
   return `${line.selectedValue} ${getQuantityLabel(line.unit)}`;
+}
+
+function getCartMessageLine(line) {
+  const quantity = line.unit === 'kg' ? `${line.count} تعبئة` : `× ${line.count}`;
+  return `• ${line.name} — ${getCartLineDescription(line)} ${quantity}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -403,13 +421,15 @@ function renderMenu() {
 
 function renderCart() {
   const itemCount = state.cart.reduce((total, line) => total + line.count, 0);
-  const totalPrice = state.cart.reduce(
-    (total, line) => total + line.selectedValue * line.count,
-    0,
-  );
+  const totalPrice = calculateCartTotal();
+  const deliverySelected = isDeliverySelected();
 
   elements.cartCount.textContent = itemCount;
   elements.cartTotal.textContent = formatMoney(totalPrice);
+  elements.cartTotalLabel.textContent = deliverySelected ? 'إجمالي المنتجات' : 'إجمالي الطلب';
+  elements.cartNote.textContent = deliverySelected
+    ? 'السعر المعروض غير شامل التوصيل؛ يتم تأكيد رسومه عبر واتساب.'
+    : 'هذا هو إجمالي طلب الاستلام الشخصي.';
   elements.cartEmpty.hidden = state.cart.length > 0;
   elements.checkoutButton.disabled = state.cart.length === 0;
 
@@ -482,6 +502,7 @@ function openCart() {
   elements.cartPanel.setAttribute('aria-hidden', 'false');
   elements.cartToggle.setAttribute('aria-expanded', 'true');
   elements.backdrop.hidden = false;
+  document.body.classList.add('cart-open');
   elements.cartClose.focus();
 }
 
@@ -490,6 +511,7 @@ function closeCart() {
   elements.cartPanel.setAttribute('aria-hidden', 'true');
   elements.cartToggle.setAttribute('aria-expanded', 'false');
   elements.backdrop.hidden = true;
+  document.body.classList.remove('cart-open');
   elements.cartToggle.focus();
 }
 
@@ -506,28 +528,30 @@ function showToast(message = 'تمت إضافة الصنف إلى السلة') {
 function setDeliveryFields(deliverySelected) {
   elements.locationField.hidden = !deliverySelected;
   elements.location.required = deliverySelected;
+  elements.location.disabled = !deliverySelected;
+  if (!deliverySelected) elements.location.value = '';
+  renderCart();
 }
 
 function createWhatsappMessage(formData) {
   const isDelivery = formData.get('fulfillment') === 'delivery';
-  const lines = state.cart.map(line =>
-    `• ${line.name} — ${getCartLineDescription(line)} × ${line.count}`,
-  ).join('\n');
-  const total = state.cart.reduce(
-    (sum, line) => sum + line.selectedValue * line.count,
-    0,
-  );
+  const lines = state.cart.map(getCartMessageLine).join('\n');
+  const total = calculateCartTotal();
+  const totalLine = isDelivery
+    ? `إجمالي المنتجات: ${formatMoney(total)} (غير شامل التوصيل)`
+    : `إجمالي الطلب: ${formatMoney(total)}`;
 
   return [
     `طلب جديد من موقع ${SITE_SETTINGS.orderBusinessName}`,
     '',
     lines,
     '',
-    `الإجمالي: ${formatMoney(total)}`,
+    totalLine,
     `طريقة الاستلام: ${isDelivery ? 'توصيل' : 'استلام شخصي'}`,
     `الاسم: ${formData.get('name')}`,
     `رقم التواصل: ${formData.get('phone')}`,
     isDelivery ? `الموقع: ${formData.get('location')}` : '',
+    formData.get('note') ? `ملاحظات العميل: ${formData.get('note')}` : '',
   ].filter(Boolean).join('\n');
 }
 
