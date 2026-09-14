@@ -350,11 +350,9 @@ function getCartMessageLine(line) {
 // ---------------------------------------------------------------------------
 
 function createImageMarkup(item) {
-  if (!item.image) {
-    return '<span class="image-placeholder">صورة المنتج قريبًا</span>';
-  }
-
-  const imagePath = item.image.includes('/') ? item.image : `images/${item.image}`;
+  const temporaryImage = '1.jpg';
+  const imageSource = item.image || temporaryImage;
+  const imagePath = imageSource.includes('/') ? imageSource : `images/${imageSource}`;
   return `<img data-product-image src="${escapeHtml(imagePath)}" alt="${escapeHtml(item.name)}" width="640" height="640" loading="lazy" decoding="async" fetchpriority="low">`;
 }
 
