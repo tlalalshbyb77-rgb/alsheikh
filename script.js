@@ -317,9 +317,15 @@ function getSelectedValue(output) {
 
 function calculateCartTotal() {
   return state.cart.reduce(
-    (total, line) => total + line.selectedValue * line.count,
+    (total, line) => total + getCartLineTotal(line),
     0,
   );
+}
+
+function getCartLineTotal(line) {
+  // الكيلو يُختار بقيمة مالية، أما الحافظة والقطعة فيُحسبان بالسعر × الكمية.
+  if (line.unit === 'kg') return line.selectedValue * line.count;
+  return line.price * line.selectedValue * line.count;
 }
 
 function isDeliverySelected() {
@@ -328,16 +334,15 @@ function isDeliverySelected() {
 
 function getCartLineDescription(line) {
   if (line.unit === 'kg') {
-    const totalGrams = Math.round((line.selectedValue / line.price) * 1000 * line.count);
-    return `الوزن التقريبي: ${totalGrams.toLocaleString('ar-LY')} غرام`;
+    return `القيمة: ${formatMoney(getCartLineTotal(line))}`;
   }
 
-  return `${line.selectedValue} ${getQuantityLabel(line.unit)}`;
+  const quantity = line.selectedValue * line.count;
+  return `${quantity} ${getQuantityLabel(line.unit)} — القيمة: ${formatMoney(getCartLineTotal(line))}`;
 }
 
 function getCartMessageLine(line) {
-  const quantity = line.unit === 'kg' ? `${line.count} تعبئة` : `× ${line.count}`;
-  return `• ${line.name} — ${getCartLineDescription(line)} ${quantity}`;
+  return `• ${line.name} — ${getCartLineDescription(line)}`;
 }
 
 // ---------------------------------------------------------------------------
