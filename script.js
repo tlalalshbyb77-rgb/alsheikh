@@ -350,7 +350,7 @@ function getCartMessageLine(line) {
 // ---------------------------------------------------------------------------
 
 function createImageMarkup(item) {
-  const temporaryImage = '1.jpg';
+  const temporaryImage = '1.png';
   const imageSource = item.image || temporaryImage;
   const imagePath = imageSource.includes('/') ? imageSource : `images/${imageSource}`;
   return `<img data-product-image src="${escapeHtml(imagePath)}" alt="${escapeHtml(item.name)}" width="640" height="640" loading="lazy" decoding="async" fetchpriority="low">`;
