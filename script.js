@@ -6,8 +6,8 @@
  */
 
 const SITE_SETTINGS = Object.freeze({
-  phoneDisplay: '094 575 1372',
-  phoneTel: '+218945751372',
+  phoneDisplay: '0919850139',
+  phoneTel: '+218919850139',
   whatsappNumber: '218945751372',
   orderBusinessName: 'الشيخ للحلويات',
 });
