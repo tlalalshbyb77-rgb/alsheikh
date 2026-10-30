@@ -406,7 +406,7 @@ function validatePhoneInput() {
   const value = elements.phone.value.trim();
   elements.phone.setCustomValidity(
     value && !isValidLibyanPhone(value)
-      ? 'اكتب رقمًا ليبيًا صحيحًا، مثل 094 575 1372.'
+      ? 'اكتب رقمًا ليبيًا صحيحًا، مثل 091 985 0139.'
       : '',
   );
 }
