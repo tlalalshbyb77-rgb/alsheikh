@@ -118,8 +118,8 @@ const PRODUCT_DATA = {
     products: [
       { order: 1, name: 'مقروض طبيعي', price: 20, image: 'images/حوافظ/مقروض.webp' },
       { order: 2, name: 'مقروض عادي', price: 17, image: 'images/حوافظ/مقروض.webp' },
-      { order: 3, name: 'كعك حلو', price: 12, image: 'images/حوافظ/كعك حلو.webp' },
-      { order: 4, name: 'كعك مالح', price: 12, image: 'images/حوافظ/كعك مالح.webp' },
+      { order: 3, name: 'كعك حلو', price: 14, image: 'images/حوافظ/كعك حلو.webp' },
+      { order: 4, name: 'كعك مالح', price: 14, image: 'images/حوافظ/كعك مالح.webp' },
       { order: 7, name: 'قرينات كورن فلكس', price: 16, image: 'images/حوافظ/قرينات كورن فلكس.webp' },
       { order: 8, name: 'قرينات كاكاوية', price: 16, image: 'images/حوافظ/قرينات كاكاوية.webp' },
       { order: 9, name: 'قرينات لوتس', price: 17, image: 'images/حوافظ/حافظة قرينات لوتس.webp' },
