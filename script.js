@@ -127,7 +127,7 @@ const PRODUCT_DATA = {
       { order: 11, name: 'أصابع بريستيج', price: 18, image: 'images/حوافظ/أصابع بريستيج.webp' },
       { order: 12, name: 'سابلي بستاشيو', price: 19, image: 'images/حوافظ/حافظة سابلي بستاشيو.webp' },
       { order: 13, name: 'كعك فيريرو', price: 18, image: 'images/حوافظ/حافظة كعك فيريرو أبيض.webp' },
-      { order: 14, name: 'حذوة لوز', price: 17, image: 'images/حوافظ/حذوة لوز.webp' },
+      { order: 14, name: 'مميلحة خزايني', price: 17, image: 'images/حوافظ/حذوة لوز.webp' },
       { order: 15, name: 'كعك شوش ورد', price: 16, image: 'images/حوافظ/حافظة غريبة شوش ورد.webp' },
       { order: 18, name: 'كعك ملبس شوكولاتة', price: 16, image: 'images/حوافظ/كعك ملبس شوكلاتة.webp' },
       { order: 20, name: 'سابلي مربى', price: 16, image: 'images/حوافظ/حافظة سابلي مربى.webp' },
